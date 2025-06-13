@@ -1,152 +1,229 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>owo spammer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>uwu spammer owo</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
     body {
-      background: #0d0d0d;
-      color: #00ffcc;
-      font-family: monospace;
-      padding: 20px;
+      background: #ffe4f0;
+      font-family: 'Comic Neue', cursive, sans-serif;
+      color: #6b2e4f;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding-top: 40px;
     }
-    input, select, button {
-      background: #1a1a1a;
-      color: #00ffcc;
-      border: none;
-      padding: 5px;
-      margin: 5px 0;
+    main {
+      background: #fff0f6;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(107,46,79,0.3);
+      width: 380px;
+      padding: 30px 35px;
+    }
+    h1 {
+      margin: 0 0 25px 0;
+      font-size: 2.2rem;
+      text-align: center;
+      color: #a7336e;
+      letter-spacing: 1.5px;
+      text-transform: lowercase;
+    }
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      color: #a7336e;
+      text-transform: lowercase;
+    }
+    input[type="text"], select {
       width: 100%;
+      padding: 11px 14px;
+      border: none;
+      border-radius: 14px;
+      box-shadow: 0 4px 10px #f7c9d9 inset;
+      font-family: 'Comic Neue', cursive;
+      font-size: 1rem;
+      color: #7a3c66;
+      outline: none;
+      margin-bottom: 18px;
+      text-transform: lowercase;
     }
-    button {
-      background: #00ffcc;
-      color: #0d0d0d;
+    select {
+      background: #ffd1e7 url('data:image/svg+xml;utf8,<svg fill="%23a7336e" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 12px center;
+      background-size: 18px;
       cursor: pointer;
     }
-    #x8 {
-      margin-top: 20px;
-      color: #999;
-      font-size: 12px;
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #fce1ee, #a7336e);
+      border: none;
+      padding: 14px 0;
+      font-size: 1.2rem;
+      border-radius: 22px;
+      color: #fff0f6;
+      box-shadow: 0 6px 15px #b94a8a;
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-transform: lowercase;
+      margin-bottom: 12px;
+    }
+    .status_box {
+      background: #ffd4e1;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 0.9rem;
+      height: 150px;
+      overflow-y: auto;
+      color: #7a3c66;
+      box-shadow: inset 0 0 8px #b45f7b;
+      font-family: monospace;
+      white-space: pre-wrap;
+      text-transform: lowercase;
+    }
+    .footer {
+      margin-top: 14px;
+      font-size: 0.75rem;
+      text-align: center;
+      color: #b07ca9;
+      text-transform: lowercase;
     }
   </style>
 </head>
 <body>
-  <h1>owo spammer tool</h1>
-  <input id="x0" placeholder="token desu~">
-  <input id="x1" placeholder="channel id nyan~">
-  <select id="x2"></select>
-  <select id="x3">
-    <option value="shift">shift mode</option>
-    <option value="enter">enter mode</option>
-  </select>
-  <input id="x4" placeholder="mentions like @everyone or ids owo">
-  <button id="x5">start spam uwu</button>
-  <button id="x6">stop spam qwq</button>
-  <div id="x7">waiting owo...</div>
-  <div id="x8">loading .txt list meow</div>
+  <main>
+    <h1>uwu spammer owo</h1>
+    <label for="x0">token</label>
+    <input type="text" id="x0" />
+    <label for="x1">channel id</label>
+    <input type="text" id="x1" />
+    <label for="x2">choose notepad</label>
+    <select id="x2"></select>
+    <label for="x3">mode</label>
+    <select id="x3">
+      <option value="shift">shift (20 lines delay)</option>
+      <option value="enter">enter (line by line)</option>
+    </select>
+    <label for="x4">mentions (user ids)</label>
+    <input type="text" id="x4" />
+    <button id="x5">start spam</button>
+    <button id="x6">stop spam</button>
+    <div class="status_box" id="x7">waiting uwu</div>
+    <div class="footer" id="x8">loading txts owo</div>
+  </main>
   <script>
-    let x9 = document.querySelector('#x0'),
-        x10 = document.querySelector('#x1'),
-        x11 = document.querySelector('#x2'),
-        x12 = document.querySelector('#x3'),
-        x13 = document.querySelector('#x4'),
-        x14 = document.querySelector('#x5'),
-        x15 = document.querySelector('#x6'),
-        x16 = document.querySelector('#x7'),
-        x17 = document.querySelector('#x8')
-    let x18 = [], x19 = 0, x20 = false
-    let x21 = async () => {
+    let x9 = []
+    let x10 = 0
+    let x11 = false
+    let x12 = null
+
+    const x0 = document.getElementById('x0')
+    const x1 = document.getElementById('x1')
+    const x2 = document.getElementById('x2')
+    const x3 = document.getElementById('x3')
+    const x4 = document.getElementById('x4')
+    const x5 = document.getElementById('x5')
+    const x6 = document.getElementById('x6')
+    const x7 = document.getElementById('x7')
+    const x8 = document.getElementById('x8')
+
+    x5.onclick = async () => {
+      if (x11) return
+      await x13()
+      x11 = true
+      x14()
+    }
+
+    x6.onclick = () => {
+      x11 = false
+      x7.textContent = 'stopped spam owo'
+    }
+
+    async function x13() {
       try {
-        let x22 = await fetch('/notepad')
-        if (!x22.ok) throw 'nope'
-        let x23 = await x22.json()
-        x11.innerHTML = ''
-        x23.forEach(x24 => {
-          let x25 = document.createElement('option')
-          x25.value = x24
-          x25.innerText = x24.split('.')[0]
-          x11.appendChild(x25)
-        })
-        x17.innerText = 'txts uwu : ' + x23.map(x=>x.replace('.txt','')).join(' ')
-        x16.innerText = 'yay txts loaded owo'
+        const res = await fetch('/notepad/' + encodeURIComponent(x2.value))
+        const txt = await res.text()
+        x9 = txt.split('\n').filter(l => l.trim())
+        x10 = 0
+        x7.textContent = 'loaded ' + x2.value + ' owo'
       } catch {
-        x17.innerText = 'rip txts not loading >_<'
-        x16.innerText = 'can u fix ur txt folder pls'
+        x7.textContent = 'failed to load notepad owo'
       }
     }
-    x21()
-    x14.onclick = async () => {
-      if (x20) return
+
+    async function x15(msg) {
       try {
-        let x26 = await fetch('/notepad/' + encodeURIComponent(x11.value))
-        let x27 = await x26.text()
-        x18 = x27.split('\n').filter(x => x.trim())
-        x20 = true
-        x19 = 0
-        x16.innerText = 'lets spam desu~'
-        x28()
-      } catch {
-        x16.innerText = 'cant read notepad q-q'
-      }
-    }
-    x15.onclick = () => {
-      x20 = false
-      x16.innerText = 'stopped spamming meow'
-    }
-    async function x29(x30) {
-      try {
-        let x31 = await fetch(`https://discord.com/api/v9/channels/${x10.value.trim()}/messages`, {
+        const res = await fetch(`https://discord.com/api/v9/channels/${x1.value}/messages`, {
           method: 'POST',
           headers: {
-            authorization: x9.value.trim(),
+            'authorization': x0.value,
             'content-type': 'application/json'
           },
-          body: JSON.stringify({ content: x30 })
+          body: JSON.stringify({ content: msg })
         })
-        if (x31.status === 429) {
-          x16.innerText = 'ouch rate limit wait 5s'
-          await new Promise(x32 => setTimeout(x32, 5000))
-          return x29(x30)
+        if (res.status === 429) {
+          x7.textContent = 'rate limit owo wait'
+          await new Promise(r => setTimeout(r, 5000))
+          return x15(msg)
         }
+        if (!res.ok) throw 1
       } catch {
-        x16.innerText = 'error sending msg wait a bit'
-        await new Promise(x32 => setTimeout(x32, 5000))
-        return x29(x30)
+        x7.textContent = 'error sending owo retrying'
+        await new Promise(r => setTimeout(r, 5000))
+        return x15(msg)
       }
     }
-    async function x28() {
-      while (x20) {
-        let x33 = x13.value.trim().split(/\s+/).filter(x => x)
-        if (x12.value === 'shift') {
-          let x34 = '**\n'
-          for (let x35 = 0; x35 < 20; x35++) {
-            let x36 = x18[x19 % x18.length]
-            let x37 = x38(x36)
-            let x39 = (x33.length ? x33[x19 % x33.length] + ' ' : '') + x37
-            x34 += x39 + '\n'
-            x19++
+
+    async function x14() {
+      while (x11) {
+        if (x3.value === 'shift') {
+          let batch = []
+          for (let i = 0; i < 20; i++) {
+            const index = (x10 + i) % x9.length
+            let line = x9[index]
+            line = [...line].map(c => Math.random() < 0.4 ? c.toUpperCase() : c.toLowerCase()).join('')
+            const mention = x4.value.trim().split(/\s+/)[i % x4.value.trim().split(/\s+/).length] || ''
+            batch.push(mention + ' ' + line)
           }
-          await x29(x34)
-          x16.innerText = `sent batch ${x19}`
+          batch[0] = '**' + batch[0]
+          for (let msg of batch) {
+            await x15(msg)
+          }
+          x10 = (x10 + 20) % x9.length
+          x7.textContent = 'sent batch owo'
         } else {
-          let x36 = x18[x19 % x18.length]
-          let x37 = x38(x36)
-          let x39 = '**\n' + (x33.length ? x33[x19 % x33.length] + ' ' : '') + x37
-          await x29(x39)
-          x19++
-          x16.innerText = `sent line ${x19}`
+          const index = x10 % x9.length
+          let line = x9[index]
+          line = [...line].map(c => Math.random() < 0.5 ? c.toUpperCase() : c.toLowerCase()).join('')
+          const mention = x4.value.trim().split(/\s+/)[index % x4.value.trim().split(/\s+/).length] || ''
+          const msg = '**' + mention + ' ' + line
+          await x15(msg)
+          x10++
+          x7.textContent = 'sent line owo'
         }
-        await new Promise(x40 => setTimeout(x40, 800))
       }
-      x16.innerText = 'done spamming uwu (loop will end if stopped)'
     }
-    function x38(x41) {
-      let x42 = x41.split(' ').map(x43 => {
-        return [...x43].map(c => Math.random() < .5 ? c.toUpperCase() : c.toLowerCase()).join('')
-      }).join(' ')
-      if (Math.random() < 0.4) x42 += ' 💕'
-      if (Math.random() < 0.2) x42 = '**' + x42 + '**'
-      return x42
+
+    async function x16() {
+      try {
+        const res = await fetch('/notepad')
+        const files = await res.json()
+        x2.innerHTML = ''
+        files.forEach(f => {
+          const o = document.createElement('option')
+          o.value = f
+          o.textContent = f.replace('.txt','')
+          x2.appendChild(o)
+        })
+        x8.textContent = 'available txts : ' + files.map(f=>f.replace('.txt','')).join(' ')
+      } catch {
+        x8.textContent = 'failed to load txt list owo'
+      }
     }
+
+    x16()
   </script>
 </body>
 </html>
