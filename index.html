@@ -1,113 +1,129 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>talent smr</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lua Obfuscator</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       padding: 0;
-      background: #0d0d0d;
+      font-family: 'Courier New', Courier, monospace;
+      background: linear-gradient(to right, #000000, #1a1a1a);
       color: #00ff99;
-      font-family: monospace;
     }
     .container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
+      max-width: 900px;
+      margin: 80px auto;
+      padding: 30px;
       background: #111;
-      border: 1px solid #333;
-      border-radius: 8px;
-      box-shadow: 0 0 20px rgba(0, 255, 100, 0.2);
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 255, 153, 0.3);
+    }
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      color: #00ffcc;
     }
     textarea {
       width: 100%;
-      height: 300px;
+      height: 280px;
+      padding: 15px;
       background: #000;
       color: #0f0;
-      font-family: monospace;
-      font-size: 14px;
-      padding: 12px;
-      border: none;
-      outline: none;
-      resize: none;
-      box-shadow: inset 0 0 10px #0f0;
+      font-size: 15px;
+      border: 2px solid #00ff99;
+      border-radius: 8px;
+      resize: vertical;
+      margin-bottom: 20px;
     }
     button {
-      background: #0f0;
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background-color: #00ff99;
       color: #000;
-      padding: 10px 20px;
-      font-weight: bold;
       border: none;
-      margin-top: 10px;
+      font-weight: bold;
+      border-radius: 8px;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: 0.3s ease;
     }
     button:hover {
-      background: #00cc66;
+      background-color: #00cc77;
     }
     pre {
-      margin-top: 20px;
       background: #000;
-      padding: 10px;
-      font-size: 13px;
       color: #0f0;
-      border-left: 4px solid #0f0;
+      padding: 15px;
+      font-size: 14px;
+      margin-top: 20px;
+      border-left: 4px solid #00ff99;
+      border-radius: 6px;
+      overflow-wrap: break-word;
       white-space: pre-wrap;
-      word-wrap: break-word;
+    }
+    .info {
+      color: #bbb;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Lua Script Obfuscator v2.7</h2>
-    <p style="color: #aaa; font-size: 14px;">
-      paste your script below it will be obfuscated and uploaded via loadstring-protected server.
-    </p>
-    <textarea id="script_input" placeholder="-- your lua script here"></textarea>
-    <button onclick="upload_script()">uplooad Script</button>
+    <h1>Lua Script Obfuscator</h1>
+    <p class="info">Paste your Lua code below and upload it. The script will be hidden and protected for secure Roblox use.</p>
+    <textarea id="script_input" placeholder="-- Paste your Lua script here"></textarea>
+    <button onclick="upload_script()">Upload Script</button>
     <pre id="debug">[debug]: ready</pre>
   </div>
-
   <script>
-    async function upload_script() {
-      const script = document.getElementById('script_input').value
-      const debug = document.getElementById('debug')
+    function random_name() {
+      return 'script_' + Math.random().toString(36).substring(2, 10);
+    }async function upload_script() {
+  const script = document.getElementById('script_input').value;
+  const debug = document.getElementById('debug');
 
-      if (!script.trim()) {
-        debug.textContent += '\n[debug]: no script provided'
-        return
-      }
+  if (!script.trim()) {
+    debug.textContent += '\n[debug]: no script provided';
+    return;
+  }
 
-      debug.textContent += '\n[debug]: starting upload...'
+  debug.textContent += '\n[debug]: starting upload...';
+  const name = random_name();
 
-      try {
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ script })
-        })
+  try {
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ name, script })
+    });
 
-        const text = await res.text()
-        let data
-        try {
-          data = JSON.parse(text)
-        } catch (err) {
-          debug.textContent += `\n[debug]: upload error: ${text}`
-          return
-        }
-
-        if (data.success && data.url) {
-          debug.textContent += `\n[debug]: uploaded successfully`
-          debug.textContent += `\n[debug]: loadstring(game:HttpGet("${data.url}"))()`
-        } else {
-          debug.textContent += `\n[debug]: upload failed: ${data.error || 'unknown'}`
-        }
-      } catch (err) {
-        debug.textContent += `\n[debug]: fatal error: ${err.message}`
-      }
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (err) {
+      debug.textContent += `\n[debug]: upload error: ${text}`;
+      return;
     }
+
+    if (data.success && data.url) {
+      debug.textContent += `\n[debug]: uploaded successfully`;
+      debug.textContent += `\n[debug]: loadstring(game:HttpGet(\"${data.url}\"))()`;
+    } else {
+      debug.textContent += `\n[debug]: upload failed: ${data.error || 'unknown'}`;
+    }
+  } catch (err) {
+    debug.textContent += `\n[debug]: fatal error: ${err.message}`;
+  }
+}
+
   </script>
 </body>
 </html>
