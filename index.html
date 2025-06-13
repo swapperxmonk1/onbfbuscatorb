@@ -1,67 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>lua script uploader</title>
-<style>
-  body { background: #111; color: #eee; font-family: monospace; padding: 2rem; }
-  textarea { width: 100%; height: 250px; background: #222; color: #eee; border: none; padding: 1rem; }
-  button { padding: 0.6rem 1rem; margin-top: 1rem; background: #333; border: none; color: #eee; cursor: pointer; }
-  button:hover { background: #555; }
-  #debug { white-space: pre-wrap; margin-top: 1rem; background: #222; height: 100px; overflow-y: auto; padding: 1rem; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>talent smr</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0d0d0d;
+      color: #00ff99;
+      font-family: monospace;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 255, 100, 0.2);
+    }
+    textarea {
+      width: 100%;
+      height: 300px;
+      background: #000;
+      color: #0f0;
+      font-family: monospace;
+      font-size: 14px;
+      padding: 12px;
+      border: none;
+      outline: none;
+      resize: none;
+      box-shadow: inset 0 0 10px #0f0;
+    }
+    button {
+      background: #0f0;
+      color: #000;
+      padding: 10px 20px;
+      font-weight: bold;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #00cc66;
+    }
+    pre {
+      margin-top: 20px;
+      background: #000;
+      padding: 10px;
+      font-size: 13px;
+      color: #0f0;
+      border-left: 4px solid #0f0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
 </head>
 <body>
-<h1>lua script uploader</h1>
-<textarea id="script" placeholder="paste your lua script here"></textarea>
-<br />
-<button id="upload_btn">upload & obfuscate</button>
-<div id="debug"></div>
+  <div class="container">
+    <h2>Lua Script Obfuscator v2.7</h2>
+    <p style="color: #aaa; font-size: 14px;">
+      paste your script below it will be obfuscated and uploaded via loadstring-protected server.
+    </p>
+    <textarea id="script_input" placeholder="-- your lua script here"></textarea>
+    <button onclick="upload_script()">uplooad Script</button>
+    <pre id="debug">[debug]: ready</pre>
+  </div>
 
-<script>
-const debug = document.getElementById('debug')
-const upload_btn = document.getElementById('upload_btn')
-const script_area = document.getElementById('script')
+  <script>
+    async function upload_script() {
+      const script = document.getElementById('script_input').value
+      const debug = document.getElementById('debug')
 
-function random_name(len = 16) {
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
-  let str = ''
-  for (let i = 0; i < len; i++) str += chars[Math.floor(Math.random() * chars.length)]
-  return str
-}
+      if (!script.trim()) {
+        debug.textContent += '\n[debug]: no script provided'
+        return
+      }
 
-async function upload_script(script_text) {
-  debug.textContent = 'starting upload...\n'
-  const random_script_name = random_name()
-  try {
-    const res = await fetch('/api/upload', {
-      method: 'POST',
-      headers: {'content-type': 'application/json'},
-      body: JSON.stringify({ name: random_script_name, script: script_text })
-    })
-    const json = await res.json()
-    if (json.success) {
-      debug.textContent += 'upload successful\n'
-      debug.textContent += 'script url: ' + json.url + '\n'
-      debug.textContent += 'use this to load the script:\n'
-      debug.textContent += `loadstring(game:HttpGet('${json.url}', true))()`
-    } else {
-      debug.textContent += 'upload failed: ' + (json.error || 'unknown error') + '\n'
+      debug.textContent += '\n[debug]: starting upload...'
+
+      try {
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ script })
+        })
+
+        const text = await res.text()
+        let data
+        try {
+          data = JSON.parse(text)
+        } catch (err) {
+          debug.textContent += `\n[debug]: upload error: ${text}`
+          return
+        }
+
+        if (data.success && data.url) {
+          debug.textContent += `\n[debug]: uploaded successfully`
+          debug.textContent += `\n[debug]: loadstring(game:HttpGet("${data.url}"))()`
+        } else {
+          debug.textContent += `\n[debug]: upload failed: ${data.error || 'unknown'}`
+        }
+      } catch (err) {
+        debug.textContent += `\n[debug]: fatal error: ${err.message}`
+      }
     }
-  } catch (e) {
-    debug.textContent += 'upload error: ' + e.message + '\n'
-  }
-}
-
-upload_btn.onclick = () => {
-  const code = script_area.value.trim()
-  if (!code) {
-    debug.textContent = 'please paste your script first'
-    return
-  }
-  upload_script(code)
-}
-</script>
+  </script>
 </body>
 </html>
