@@ -1,105 +1,152 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>lua script uploader</title>
-<style>
-  body {
-    background: #121212;
-    color: #ddd;
-    font-family: monospace, monospace;
-    margin: 0;
-    padding: 20px;
-  }
-  .container {
-    max-width: 700px;
-    margin: 0 auto;
-  }
-  textarea {
-    width: 100%;
-    height: 280px;
-    background: #222;
-    color: #eee;
-    border: none;
-    padding: 10px;
-    font-size: 14px;
-    resize: none;
-    box-sizing: border-box;
-  }
-  input[type=text] {
-    width: 100%;
-    padding: 8px;
-    margin: 12px 0 6px 0;
-    font-size: 14px;
-    box-sizing: border-box;
-    border: none;
-    background: #222;
-    color: #eee;
-  }
-  button {
-    padding: 10px 18px;
-    background: #555;
-    color: #eee;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s ease;
-  }
-  button:hover {
-    background: #777;
-  }
-  pre {
-    background: #222;
-    padding: 10px;
-    margin-top: 18px;
-    color: #eee;
-    white-space: pre-wrap;
-    word-break: break-word;
-    border-left: 3px solid #555;
-  }
-</style>
+  <meta charset="utf-8">
+  <title>discord spammer</title>
+  <style>
+    body {
+      background-color: #0b0b0b;
+      color: #0ff;
+      font-family: monospace;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      background: #111;
+      border: 2px solid #0ff;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #0ff44;
+    }
+    input, select {
+      width: 100%;
+      background: #000;
+      color: #0ff;
+      border: 1px solid #0ff;
+      padding: 10px;
+      margin: 8px 0;
+      font-family: monospace;
+    }
+    .btn {
+      display: block;
+      text-align: center;
+      background: linear-gradient(45deg,#0ff,#00f);
+      color: #000;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      font-family: monospace;
+    }
+    pre {
+      background: #000;
+      padding: 10px;
+      font-size: 13px;
+      color: #0f0;
+      border-left: 4px solid #0f0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>lua script uploader</h1>
-    <input id="script_name" placeholder="file name (no spaces)" />
-    <textarea id="script_input" placeholder="paste your lua script here"></textarea>
-    <button onclick="upload_script()">upload script</button>
-    <pre id="debug">[debug]: ready</pre>
-  </div>
+    <h2>discord spammer</h2>
+    <input id="mata2" placeholder="token string">
+    <input id="mata3" placeholder="channel id">
+    <select id="mata4">
+      <option value="shift">shift 20 lines</option>
+      <option value="enter">enter 1 line</option>
+    </select>
+    <input id="mata5" placeholder="mention ids separated by space">
+    <input id="mata6" placeholder="notepad file name">
+    <div class="btn" onclick="mata7()">start spam</div>
+    <div class="btn" onclick="mata24()">stop spam</div>
+    <pre id="mata8">[log] ready</pre>
+  </div>  <script>
+    let mata9 = false;
+    let mata10 = 0;
+    let mata11 = [];
 
-  <script>
-    async function upload_script() {
-      const debug = document.getElementById('debug')
-      const name = document.getElementById('script_name').value.trim()
-      const script = document.getElementById('script_input').value.trim()
-      if (!name) {
-        debug.textContent += '\n[debug]: missing file name'
-        return
-      }
-      if (!script) {
-        debug.textContent += '\n[debug]: missing script content'
-        return
-      }
-      debug.textContent += '\n[debug]: starting upload...'
-      try {
-        const res = await fetch('/upload', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ name, script })
-        })
-        const data = await res.json()
-        if (data.success) {
-          debug.textContent += `\n[debug]: upload successful`
-          debug.textContent += `\n[debug]: loadstring(game:HttpGet("${data.url}"))()`
-        } else {
-          debug.textContent += `\n[debug]: upload failed: ${data.error || 'unknown error'}`
+    function mata_log(msg) {
+      const el = document.getElementById('mata8');
+      el.textContent += '\n[log] '+ msg;
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function mata_format(text) {
+      let s = '**'+ text+'**';
+      if (Math.random() < 0.2) s = s.replace(/ /,' < ');
+      if (Math.random() < 0.5) s = s.toUpperCase();
+      else s = [...s].map(c=> Math.random()<0.2? c.toUpperCase(): c).join('');
+      return s;
+    }
+
+    async function mata_send(token,channel,msg) {
+      while (true) {
+        try {
+          const r = await fetch('https://discord.com/api/v9/channels/'+channel+'/messages',{ 
+            method:'POST',
+            headers:{authorization:token,'content-type':'application/json'},
+            body:JSON.stringify({content:msg})
+          });
+          if (r.status===429) {
+            const j = await r.json();
+            await new Promise(r=>setTimeout(r,(j.retry_after||5)*1000));
+            continue;
+          }
+          if (!r.ok) {
+            await new Promise(r=>setTimeout(r,5000));
+            continue;
+          }
+          break;
+        } catch {
+          await new Promise(r=>setTimeout(r,5000));
         }
-      } catch (e) {
-        debug.textContent += `\n[debug]: fatal error: ${e.message}`
       }
     }
-  </script>
-</body>
+
+    async function mata7() {
+      const token = document.getElementById('mata2').value.trim();
+      const chan = document.getElementById('mata3').value.trim();
+      const mode = document.getElementById('mata4').value;
+      const mentions = document.getElementById('mata5').value.trim().split(' ').filter(Boolean);
+      const file = document.getElementById('mata6').value.trim();
+
+      if (!token||!chan||!file) {
+        mata_log('missing input'); return;
+      }
+
+      const resp = await fetch('/notepad/'+file);
+      if (!resp.ok) { mata_log('file fetch failed'); return; }
+      mata11 = (await resp.text()).split(/\r?\n/).filter(Boolean);
+      mata9 = true;
+      mata_log('file loaded');
+
+      while(mata9) {
+        let block = [];
+        if (mode==='shift') {
+          for (let i=0;i<20;i++) block.push(mata11[mata10++ % mata11.length]);
+        } else {
+          block.push(mata11[mata10++ % mata11.length]);
+        }
+        const text = block.map(t=>mata_format(t)).join(mode==='shift'?'\n':'');
+        const mention = mentions.length? '<@'+mentions[Math.floor(Math.random()*mentions.length)]+'>\n': '';
+        await mata_send(token,chan,mention+text);
+        mata_log('sent');
+        await new Promise(r=>setTimeout(r,mode==='shift'?3000:1000));
+      }
+      mata_log('stopped');
+    }
+
+    function mata24() {
+      mata9=false;
+    }
+  </script></body>
 </html>
