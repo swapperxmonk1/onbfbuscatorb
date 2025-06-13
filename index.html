@@ -1,152 +1,324 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en" >
 <head>
-  <meta charset="utf-8">
-  <title>discord spammer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>uwu spammer owo</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
     body {
-      background-color: #0b0b0b;
-      color: #0ff;
-      font-family: monospace;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      background: #ffe4f0;
+      font-family: 'Comic Neue', cursive, sans-serif;
+      color: #6b2e4f;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding-top: 40px;
+      user-select: none;
     }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 20px;
-      background: #111;
-      border: 2px solid #0ff;
-      border-radius: 10px;
-      box-shadow: 0 0 20px #0ff44;
+    main {
+      background: #fff0f6;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(107,46,79,0.3);
+      width: 380px;
+      padding: 30px 35px;
+      box-sizing: border-box;
     }
-    input, select {
-      width: 100%;
-      background: #000;
-      color: #0ff;
-      border: 1px solid #0ff;
-      padding: 10px;
-      margin: 8px 0;
-      font-family: monospace;
-    }
-    .btn {
-      display: block;
+    h1 {
+      margin: 0 0 25px 0;
+      font-weight: 700;
+      font-size: 2.2rem;
       text-align: center;
-      background: linear-gradient(45deg,#0ff,#00f);
-      color: #000;
-      padding: 12px;
-      margin: 10px 0;
+      color: #a7336e;
+      user-select: none;
+      letter-spacing: 1.5px;
+      text-transform: lowercase;
+    }
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      color: #a7336e;
+      user-select: none;
+      text-transform: lowercase;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 11px 14px;
       border: none;
-      border-radius: 6px;
+      border-radius: 14px;
+      box-shadow: 0 4px 10px #f7c9d9 inset;
+      font-family: 'Comic Neue', cursive, sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #7a3c66;
+      outline: none;
+      margin-bottom: 18px;
+      user-select: text;
+      caret-color: #b34e7e;
+      transition: box-shadow 0.3s ease;
+      text-transform: lowercase;
+    }
+    input[type="text"]:focus, select:focus {
+      box-shadow: 0 4px 14px #eb9cc0 inset;
+    }
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: #ffd1e7 url('data:image/svg+xml;utf8,<svg fill="%23a7336e" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 12px center;
+      background-size: 18px;
+      cursor: pointer;
+      text-transform: lowercase;
+    }
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #fce1ee, #a7336e);
+      border: none;
+      padding: 14px 0;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border-radius: 22px;
+      color: #fff0f6;
+      box-shadow: 0 6px 15px #b94a8a;
       cursor: pointer;
       user-select: none;
-      font-family: monospace;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      letter-spacing: 1px;
+      text-transform: lowercase;
     }
-    pre {
-      background: #000;
-      padding: 10px;
-      font-size: 13px;
-      color: #0f0;
-      border-left: 4px solid #0f0;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      max-height: 300px;
+    button:hover {
+      background: linear-gradient(135deg, #b74e8d, #702a51);
+      box-shadow: 0 6px 15px #8b2854;
+    }
+    .status_box {
+      margin-top: 20px;
+      background: #ffd4e1;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 0.9rem;
+      height: 150px;
       overflow-y: auto;
-      margin-top: 10px;
+      white-space: pre-wrap;
+      color: #7a3c66;
+      box-shadow: inset 0 0 8px #b45f7b;
+      user-select: text;
+      font-family: monospace;
+      text-transform: lowercase;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 0.75rem;
+      text-align: center;
+      color: #b07ca9;
+      user-select: none;
+      text-transform: lowercase;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>discord spammer</h2>
-    <input id="mata2" placeholder="token string">
-    <input id="mata3" placeholder="channel id">
+  <main>
+    <h1>uwu spammer owo</h1>
+    <label for="mata1">token</label>
+    <input type="text" id="mata1" autocomplete="off" spellcheck="false" />
+
+    <label for="mata2">channel id</label>
+    <input type="text" id="mata2" autocomplete="off" spellcheck="false" />
+
+    <label for="mata3">choose notepad (available txts shown below)</label>
+    <select id="mata3"></select>
+
+    <label for="mata4">mode</label>
     <select id="mata4">
-      <option value="shift">shift 20 lines</option>
-      <option value="enter">enter 1 line</option>
+      <option value="shift">shift (20 lines delay)</option>
+      <option value="enter">enter (line by line)</option>
     </select>
-    <input id="mata5" placeholder="mention ids separated by space">
-    <input id="mata6" placeholder="notepad file name">
-    <div class="btn" onclick="mata7()">start spam</div>
-    <div class="btn" onclick="mata24()">stop spam</div>
-    <pre id="mata8">[log] ready</pre>
-  </div>  <script>
-    let mata9 = false;
-    let mata10 = 0;
-    let mata11 = [];
 
-    function mata_log(msg) {
-      const el = document.getElementById('mata8');
-      el.textContent += '\n[log] '+ msg;
-      el.scrollTop = el.scrollHeight;
-    }
+    <label for="mata5">mentions (space sep userids)</label>
+    <input type="text" id="mata5" autocomplete="off" spellcheck="false" />
 
-    function mata_format(text) {
-      let s = '**'+ text+'**';
-      if (Math.random() < 0.2) s = s.replace(/ /,' < ');
-      if (Math.random() < 0.5) s = s.toUpperCase();
-      else s = [...s].map(c=> Math.random()<0.2? c.toUpperCase(): c).join('');
-      return s;
-    }
+    <button id="mata6">start spamming</button>
+    <button id="mata7" style="margin-top:12px;background:#a7336e;">stop spam</button>
 
-    async function mata_send(token,channel,msg) {
-      while (true) {
+    <div class="status_box" id="mata8">status owo</div>
+    <div class="footer" id="mata9">loading available txts owo</div>
+  </main>
+
+  <script>
+    (() => {
+      const mata1 = document.getElementById('mata1')
+      const mata2 = document.getElementById('mata2')
+      const mata3 = document.getElementById('mata3')
+      const mata4 = document.getElementById('mata4')
+      const mata5 = document.getElementById('mata5')
+      const mata6 = document.getElementById('mata6')
+      const mata7 = document.getElementById('mata7')
+      const mata8 = document.getElementById('mata8')
+      const mata9 = document.getElementById('mata9')
+
+      let mata10 = []
+      let mata11 = 0
+      let mata12 = false
+
+      async function mata_load_txts() {
         try {
-          const r = await fetch('https://discord.com/api/v9/channels/'+channel+'/messages',{ 
-            method:'POST',
-            headers:{authorization:token,'content-type':'application/json'},
-            body:JSON.stringify({content:msg})
-          });
-          if (r.status===429) {
-            const j = await r.json();
-            await new Promise(r=>setTimeout(r,(j.retry_after||5)*1000));
-            continue;
+          let res = await fetch('/notepad')
+          if (!res.ok) throw 1
+          let data = await res.json()
+          mata3.innerHTML = ''
+          data.forEach(f => {
+            let o = document.createElement('option')
+            o.value = f
+            o.textContent = f.replace(/\.[^/.]+$/, '')
+            mata3.appendChild(o)
+          })
+          mata9.textContent = 'available txts : ' + data.map(f => f.replace(/\.[^/.]+$/, '')).join(' ')
+          mata8.textContent = 'loaded txt list owo'
+          if (mata3.options.length > 0) {
+            mata3.selectedIndex = 0
+            await mata_load_lines()
           }
-          if (!r.ok) {
-            await new Promise(r=>setTimeout(r,5000));
-            continue;
-          }
-          break;
         } catch {
-          await new Promise(r=>setTimeout(r,5000));
+          mata9.textContent = 'failed to load txts owo'
+          mata8.textContent = 'failed to load txt list owo'
         }
       }
-    }
 
-    async function mata7() {
-      const token = document.getElementById('mata2').value.trim();
-      const chan = document.getElementById('mata3').value.trim();
-      const mode = document.getElementById('mata4').value;
-      const mentions = document.getElementById('mata5').value.trim().split(' ').filter(Boolean);
-      const file = document.getElementById('mata6').value.trim();
-
-      if (!token||!chan||!file) {
-        mata_log('missing input'); return;
-      }
-
-      const resp = await fetch('/notepad/'+file);
-      if (!resp.ok) { mata_log('file fetch failed'); return; }
-      mata11 = (await resp.text()).split(/\r?\n/).filter(Boolean);
-      mata9 = true;
-      mata_log('file loaded');
-
-      while(mata9) {
-        let block = [];
-        if (mode==='shift') {
-          for (let i=0;i<20;i++) block.push(mata11[mata10++ % mata11.length]);
-        } else {
-          block.push(mata11[mata10++ % mata11.length]);
+      async function mata_load_lines() {
+        try {
+          let f = mata3.value
+          let res = await fetch('/notepad/' + encodeURIComponent(f))
+          if (!res.ok) throw 1
+          let txt = await res.text()
+          mata10 = txt.split('\n').filter(l => l.trim().length > 0)
+          mata11 = 0
+          mata8.textContent = `loaded notepad ${f} owo`
+        } catch {
+          mata8.textContent = 'failed to load notepad content owo'
         }
-        const text = block.map(t=>mata_format(t)).join(mode==='shift'?'\n':'');
-        const mention = mentions.length? '<@'+mentions[Math.floor(Math.random()*mentions.length)]+'>\n': '';
-        await mata_send(token,chan,mention+text);
-        mata_log('sent');
-        await new Promise(r=>setTimeout(r,mode==='shift'?3000:1000));
       }
-      mata_log('stopped');
-    }
 
-    function mata24() {
-      mata9=false;
-    }
-  </script></body>
+      function mata_modify(m) {
+        let w = m.split(' ').map(w => {
+          if (Math.random() < 0.2) return w.toUpperCase()
+          return [...w].map(c => (Math.random() < 0.5 ? c.toLowerCase() : c.toUpperCase())).join('')
+        }).join(' ')
+        w = '**up** ' + w + ' **down**'
+        if (!mata_modify.added_arrow) {
+          let pos = Math.floor(Math.random() * w.length)
+          w = w.slice(0, pos) + '<' + w.slice(pos)
+          mata_modify.added_arrow = true
+        }
+        return w
+      }
+      mata_modify.added_arrow = false
+
+      async function mata_send(c) {
+        let t = mata1.value.trim()
+        if (!t) return mata8.textContent = 'token missing owo'
+        try {
+          let res = await fetch(`https://discord.com/api/v9/channels/${mata2.value.trim()}/messages`, {
+            method: 'POST',
+            headers: {
+              'authorization': t,
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({ content: c })
+          })
+          if (res.status === 429) {
+            let d = await res.json()
+            mata8.textContent = `rate limited waiting 5s owo`
+            await new Promise(r => setTimeout(r, 5000))
+            return mata_send(c)
+          }
+          if (!res.ok) throw 1
+        } catch {
+          mata8.textContent = 'error sending message owo retrying in 5s'
+          await new Promise(r => setTimeout(r, 5000))
+          return mata_send(c)
+        }
+      }
+
+      async function mata_spam() {
+        if (!mata12) return
+        if (mata11 >= mata10.length) {
+          mata8.textContent = 'finished all lines owo'
+          mata12 = false
+          return
+        }
+        let mentions = mata5.value.trim().split(/\s+/).filter(x => x.length > 0)
+        if (mata4.value === 'shift') {
+          let batch = []
+          let end = Math.min(mata11 + 20, mata10.length)
+          for (let i = mata11; i < end; i++) {
+            let msg = mata_modify(mata10[i])
+            if (mentions.length > 0) {
+              msg = mentions[i % mentions.length] + ' ' + msg
+            }
+            batch.push(msg)
+          }
+          for (let b of batch) {
+            if (!mata12) break
+            await mata_send(b)
+          }
+          mata11 += 20
+          if (mata12) {
+            mata8.textContent = `sent 20 lines owo current line ${mata11}/${mata10.length}`
+            setTimeout(mata_spam, 5000)
+          }
+        } else if (mata4.value === 'enter') {
+          let msg = mata_modify(mata10[mata11])
+          if (mentions.length > 0) {
+            msg = mentions[mata11 % mentions.length] + ' ' + msg
+          }
+          await mata_send(msg)
+          mata11++
+          if (mata12) {
+            mata8.textContent = `sent line ${mata11}/${mata10.length} owo`
+            setTimeout(mata_spam, 1000)
+          }
+        }
+      }
+
+      mata3.addEventListener('change', () => {
+        mata_modify.added_arrow = false
+        mata_load_lines()
+      })
+
+      mata6.onclick = () => {
+        if (mata12) return
+        if (!mata1.value.trim() || !mata2.value.trim()) {
+          mata8.textContent = 'token or channel id missing owo'
+          return
+        }
+        if (!mata3.value) {
+          mata8.textContent = 'choose a notepad owo'
+          return
+        }
+        mata_modify.added_arrow = false
+        mata_load_lines().then(() => {
+          mata11 = 0
+          mata12 = true
+          mata_spam()
+          mata8.textContent = 'started spamming owo'
+        })
+      }
+
+      mata7.onclick = () => {
+        if (!mata12) {
+          mata8.textContent = 'not spamming owo'
+          return
+        }
+        mata12 = false
+        mata8.textContent = 'stopped spamming owo'
+      }
+
+      mata_load_txts()
+    })()
+  </script>
+</body>
 </html>
