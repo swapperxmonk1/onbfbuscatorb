@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>lua script uploader</title>
+<style>
+  body { background: #111; color: #eee; font-family: monospace; padding: 2rem; }
+  textarea { width: 100%; height: 250px; background: #222; color: #eee; border: none; padding: 1rem; }
+  button { padding: 0.6rem 1rem; margin-top: 1rem; background: #333; border: none; color: #eee; cursor: pointer; }
+  button:hover { background: #555; }
+  #debug { white-space: pre-wrap; margin-top: 1rem; background: #222; height: 100px; overflow-y: auto; padding: 1rem; }
+</style>
+</head>
+<body>
+<h1>lua script uploader</h1>
+<textarea id="script" placeholder="paste your lua script here"></textarea>
+<br />
+<button id="upload_btn">upload & obfuscate</button>
+<div id="debug"></div>
+
+<script>
+const debug = document.getElementById('debug')
+const upload_btn = document.getElementById('upload_btn')
+const script_area = document.getElementById('script')
+
+function random_name(len = 16) {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+  let str = ''
+  for (let i = 0; i < len; i++) str += chars[Math.floor(Math.random() * chars.length)]
+  return str
+}
+
+async function upload_script(script_text) {
+  debug.textContent = 'starting upload...\n'
+  const random_script_name = random_name()
+  try {
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      body: JSON.stringify({ name: random_script_name, script: script_text })
+    })
+    const json = await res.json()
+    if (json.success) {
+      debug.textContent += 'upload successful\n'
+      debug.textContent += 'script url: ' + json.url + '\n'
+      debug.textContent += 'use this to load the script:\n'
+      debug.textContent += `loadstring(game:HttpGet('${json.url}', true))()`
+    } else {
+      debug.textContent += 'upload failed: ' + (json.error || 'unknown error') + '\n'
+    }
+  } catch (e) {
+    debug.textContent += 'upload error: ' + e.message + '\n'
+  }
+}
+
+upload_btn.onclick = () => {
+  const code = script_area.value.trim()
+  if (!code) {
+    debug.textContent = 'please paste your script first'
+    return
+  }
+  upload_script(code)
+}
+</script>
+</body>
+</html>
