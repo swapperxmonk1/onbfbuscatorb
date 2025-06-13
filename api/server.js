@@ -1,39 +1,62 @@
-import fetch from 'node-fetch'
+const express = require('express')
+const fetch = require('node-fetch')
+const { Octokit } = require('octokit')
+require('dotenv').config()
 
-export default async function handler(req, res) {
-  const user_agent = (req.headers['user-agent'] || '').toLowerCase()
-  const loadstring_header = req.headers['x-loadstring']
+const app = express()
+app.use(express.json())
 
-  if (!user_agent.includes('roblox') && !loadstring_header) {
-    res.writeHead(302, { Location: '/' })
-    res.end()
-    return
+const octokit = new Octokit({ auth: process.env.blabla })
+
+app.post('/upload', async (req, res) => {
+  const { name, script } = req.body
+  if (!name || !script) {
+    return res.status(400).json({ error: 'missing name or script' })
   }
 
-  const script_name = req.query.name
-  if (!script_name || !/^[a-z0-9]{10,}$/.test(script_name)) {
-    res.status(400).end('invalid script name')
-    return
-  }
-
-  const raw_url = `https://raw.githubusercontent.com/${process.env.blabla2}/${process.env.blabla3}/main/scripts/${script_name}.lua`
+  const path = `scripts/${name}.lua`
+  let sha
 
   try {
-    const response = await fetch(raw_url)
-    if (!response.ok) {
-      res.status(404).end('script not found')
-      return
-    }
+    const { data } = await octokit.rest.repos.getContent({
+      owner: process.env.blabla2,
+      repo: process.env.blabla3,
+      path
+    })
+    sha = data.sha
+  } catch {}
 
-    const script = await response.text()
+  try {
+    await octokit.rest.repos.createOrUpdateFileContents({
+      owner: process.env.blabla2,
+      repo: process.env.blabla3,
+      path,
+      message: `upload script ${name}`,
+      content: Buffer.from(script).toString('base64'),
+      sha
+    })
 
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown'
-
-    console.log(`script ${script_name} fetched ip: ${ip}`)
-
-    res.setHeader('content-type', 'text/plain')
-    res.end(script)
-  } catch {
-    res.status(500).end('internal error')
+    const url = `https://raw.githubusercontent.com/${process.env.blabla2}/${process.env.blabla3}/main/${path}`
+    return res.json({ success: true, url })
+  } catch (e) {
+    return res.status(500).json({ error: e.message })
   }
-}
+})
+
+app.get('/script/:name', async (req, res) => {
+  const name = req.params.name
+  const url = `https://raw.githubusercontent.com/${process.env.blabla2}/${process.env.blabla3}/main/scripts/${name}.lua`
+
+  try {
+    const response = await fetch(url)
+    if (!response.ok) return res.status(404).end()
+    const text = await response.text()
+    res.set('content-type', 'text/plain')
+    return res.send(text)
+  } catch {
+    return res.status(500).end()
+  }
+})
+
+const port = process.env.PORT || 3000
+app.listen(port)
