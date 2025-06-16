@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: meblackyouwhite
+    env: static
+    staticPublishPath: .
+    buildCommand: ""
